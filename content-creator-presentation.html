@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>กว่าจะมาเป็นคอนเทนต์ ครีเอเตอร์</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Prompt', sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            overflow: hidden;
+        }
+        
+        .presentation {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+            animation: slideIn 0.6s ease-out;
+        }
+        
+        .slide.active {
+            display: flex;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        h1 {
+            font-size: 4em;
+            font-weight: 700;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #ff6b6b, #ff8e53, #fe6196);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glow 3s ease-in-out infinite;
+        }
+        
+        h2 {
+            font-size: 3em;
+            font-weight: 600;
+            margin-bottom: 40px;
+            color: #fff;
+            text-shadow: 0 0 30px rgba(255, 107, 107, 0.5);
+        }
+        
+        h3 {
+            font-size: 2em;
+            font-weight: 400;
+            margin-bottom: 20px;
+            color: #ff8e53;
+        }
+        
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 30px rgba(255, 107, 107, 0.6); }
+            50% { text-shadow: 0 0 60px rgba(255, 107, 107, 0.9); }
+        }
+        
+        .content {
+            max-width: 1200px;
+            text-align: center;
+            animation: fadeUp 0.8s ease-out 0.3s both;
+        }
+        
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-top: 50px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            transition: all 0.3s ease;
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(255, 107, 107, 0.3);
+            border-color: #ff6b6b;
+        }
+        
+        .stat-number {
+            font-size: 3em;
+            font-weight: 700;
+            background: linear-gradient(45deg, #ff6b6b, #fe6196);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .stat-label {
+            font-size: 1.2em;
+            color: #ccc;
+            margin-top: 10px;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(255, 142, 83, 0.1));
+            border: 2px solid #ff6b6b;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 30px 0;
+            backdrop-filter: blur(10px);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 30px rgba(255, 107, 107, 0.3); }
+            50% { box-shadow: 0 0 50px rgba(255, 107, 107, 0.6); }
+        }
+        
+        .list-item {
+            text-align: left;
+            margin: 20px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 1.4em;
+            line-height: 1.8;
+            animation: slideInLeft 0.6s ease-out;
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .list-item:before {
+            content: "▶";
+            position: absolute;
+            left: 0;
+            color: #ff6b6b;
+            animation: blink 2s ease-in-out infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        .video-link {
+            display: inline-block;
+            color: #ff8e53;
+            text-decoration: none;
+            margin: 10px 0;
+            padding: 10px 20px;
+            border: 2px solid #ff8e53;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            background: rgba(255, 142, 83, 0.1);
+        }
+        
+        .video-link:hover {
+            background: #ff8e53;
+            color: #fff;
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(255, 142, 83, 0.5);
+        }
+        
+        .navigation {
+            position: fixed;
+            bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0 40px;
+            z-index: 1000;
+        }
+        
+        .nav-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 1.5em;
+            color: #ff8e53;
+        }
+        
+        .nav-icon:hover {
+            background: rgba(255, 107, 107, 0.2);
+            transform: scale(1.1);
+            color: #fff;
+        }
+        
+        .slide-number {
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            font-size: 1.5em;
+            color: #666;
+        }
+        
+        .emoji {
+            font-size: 1.5em;
+            margin: 0 10px;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(45deg, #ff6b6b, #fe6196, #ff8e53);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+        
+        .section-divider {
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #ff6b6b, #ff8e53);
+            margin: 30px auto;
+            border-radius: 2px;
+            animation: expand 1s ease-out;
+        }
+        
+        @keyframes expand {
+            from { width: 0; }
+            to { width: 100px; }
+        }
+        
+        .bg-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 107, 107, 0.5);
+            border-radius: 50%;
+            animation: float 20s infinite linear;
+        }
+        
+        @keyframes float {
+            from {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            to {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Image placeholder styles */
+        .image-placeholder {
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .image-placeholder:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .image-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .placeholder-text {
+            color: #666;
+            font-size: 0.9em;
+            text-align: center;
+            padding: 10px;
+        }
+        
+        .logo-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .logo-placeholder {
+            width: 150px;
+            height: 150px;
+        }
+        
+        .thumbnail-placeholder {
+            width: 270px;
+            height: 480px;
+        }
+        
+        .square-placeholder {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .platform-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <div class="bg-particles" id="particles"></div>
+        
+        <!-- Slide 1: Title -->
+        <div class="slide active">
+            <span class="slide-number">1/13</span>
+            <div class="content">
+                <h1>กว่าจะมาเป็นคอนเทนต์ ครีเอเตอร์</h1>
+                <div class="section-divider"></div>
+                <p style="font-size: 1.5em; color: #ccc; margin-top: 40px;">เส้นทางสู่การสร้างตัวตนบนโลกออนไลน์</p>
+            </div>
+        </div>
+        
+        <!-- Slide 2: Introduction -->
+        <div class="slide">
+            <span class="slide-number">2/13</span>
+            <div class="content">
+                <h2>แนะนำตัว</h2>
+                <div class="highlight-box" style="max-width: 800px;">
+                    <h3 style="color: #fff;">คุณเข้ม</h3>
+                    <img src="https://lh3.googleusercontent.com/d/1aY3MIStrkQofUjy1gBpPuEvWt0FtX3P_" alt="คุณเข้ม Profile" style="width: 652px; height: 274px; object-fit: cover; border-radius: 15px; margin: 20px auto; display: block;">
+                    <p style="font-size: 1.3em; margin: 20px 0;">ผู้บริหาร</p>
+                    <div class="logo-grid">
+                        <div class="image-placeholder logo-placeholder">
+                            <img src="https://lh3.googleusercontent.com/d/1JqFdvr5b4IVXzjJ7Xyvj0TSRlcoZi6G-" alt="Hairsmith Clinic Logo">
+                        </div>
+                        <div class="image-placeholder logo-placeholder">
+                            <img src="https://lh3.googleusercontent.com/d/1g7400SDUMt-5SjrPKmqfQhm849eCVcUW" alt="Hairtran Clinic Logo">
+                        </div>
+                        <div class="image-placeholder logo-placeholder">
+                            <img src="https://lh3.googleusercontent.com/d/1ww7lUllJyfP25OCwJIBic7E-SnJaJdel" alt="Kemist Labs Logo">
+                        </div>
+                    </div>
+                    <div class="section-divider"></div>
+                    <h3 style="color: #fff; margin-top: 30px;">Pris Tima | เรื่องของผม</h3>
+                </div>
+                <div class="stats-grid" style="margin-top: 50px;">
+                    <div class="stat-card">
+                        <div class="stat-number">57.5K</div>
+                        <div class="stat-label">TikTok</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">18.5K</div>
+                        <div class="stat-label">Instagram</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">12.4K</div>
+                        <div class="stat-label">YouTube</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 3: Top Videos -->
+        <div class="slide">
+            <span class="slide-number">3/13</span>
+            <div class="content">
+                <h2>คลิปที่มียอดวิวสูงที่สุด</h2>
+                <div style="display: flex; gap: 50px; align-items: center; justify-content: center;">
+                    <div class="image-placeholder thumbnail-placeholder">
+                        <img src="https://lh3.googleusercontent.com/d/1yM6ubFau0ME18SKNAHhGL5g12g0EFZl6" alt="Thumbnail คลิป 5.3M Views">
+                    </div>
+                    <div class="highlight-box" style="flex: 1; max-width: 500px;">
+                        <p style="font-size: 1.5em; margin-bottom: 30px;">
+                            <span class="gradient-text">16 คลิป</span> ทะลุล้านวิว 
+                            <span class="emoji">🔥</span>
+                        </p>
+                        <p style="font-size: 1.3em; color: #ccc;">คิดเป็น 10% ของคลิปทั้งหมด</p>
+                        <div class="section-divider"></div>
+                        <h3 style="color: #fff;">คลิปยอดนิยมสูงสุด</h3>
+                        <p style="font-size: 2em; margin: 20px 0;">
+                            <span class="gradient-text">5.3M Views</span>
+                        </p>
+                        <a href="https://www.tiktok.com/@kemikochan/video/7491262980370664722" class="video-link" target="_blank">
+                            ดูคลิป →
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 4: Consistency -->
+        <div class="slide">
+            <span class="slide-number">4/13</span>
+            <div class="content">
+                <h2>ความสม่ำเสมอคือหัวใจสำคัญ</h2>
+                <p style="font-size: 1.5em; margin-bottom: 50px; color: #ccc;">ยอดวิวเฉลี่ย 30 คลิปล่าสุด</p>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="image-placeholder platform-logo">
+                            <img src="https://lh3.googleusercontent.com/d/1rArdN3zX8bTF8ouQX7fYaBs4v6CGhE_3" alt="TikTok Logo">
+                        </div>
+                        <div class="stat-number">495K</div>
+                        <div class="stat-label">TikTok</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="image-placeholder platform-logo">
+                            <img src="https://lh3.googleusercontent.com/d/1IExmW4VkDU5fzIfUiC5uaDEuvy0acRmQ" alt="Instagram Logo">
+                        </div>
+                        <div class="stat-number">197K</div>
+                        <div class="stat-label">Instagram</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="image-placeholder platform-logo">
+                            <img src="https://lh3.googleusercontent.com/d/1Lx58AknmNIcP4gUbUGnqy95ndaIUHR_9" alt="YouTube Logo">
+                        </div>
+                        <div class="stat-number">220K</div>
+                        <div class="stat-label">YouTube Shorts</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 5: Personal Branding for Business -->
+        <div class="slide">
+            <span class="slide-number">5/13</span>
+            <div class="content">
+                <h2>ทำไมถึงควรทำ Personal Branding</h2>
+                <h3 style="color: #ff8e53; margin-bottom: 40px;">สำหรับนักธุรกิจ, เจ้าของกิจการ, ผู้บริหาร</h3>
+                <div class="highlight-box" style="max-width: 800px;">
+                    <div class="list-item">เซลล์ที่เก่งที่สุด</div>
+                    <div class="list-item">ความน่าเชื่อถือ ความไว้วางใจ</div>
+                    <div class="list-item">เหตุผลที่ลูกค้าเลือก</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 6: Personal Branding for Everyone -->
+        <div class="slide">
+            <span class="slide-number">6/13</span>
+            <div class="content">
+                <h2>Personal Branding</h2>
+                <h3 style="color: #ff8e53; margin-bottom: 40px;">สำหรับคนทั่วไป</h3>
+                <div class="highlight-box" style="max-width: 800px;">
+                    <div class="list-item">สร้างโอกาสทางธุรกิจให้ตัวเอง</div>
+                    <div class="list-item">อสังหาฯ บนแพลตฟอร์มออนไลน์</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 7: Business Examples -->
+        <div class="slide">
+            <span class="slide-number">7/13</span>
+            <div class="content">
+                <h2>ตัวอย่างคลิปสำหรับธุรกิจ</h2>
+                <div style="display: flex; gap: 40px; justify-content: center; margin-top: 50px;">
+                    <div style="text-align: center;">
+                        <div class="image-placeholder thumbnail-placeholder" style="margin: 0 auto 20px;">
+                            <img src="https://lh3.googleusercontent.com/d/1eNnjw3flOudLOW8PXhm2jiAA89uSZ1c7" alt="The Moffatt Thumbnail">
+                        </div>
+                        <h3 style="color: #fff; font-size: 1.5em;">The Moffatt</h3>
+                        <a href="https://www.tiktok.com/@kemikochan/video/7502394500346580232" class="video-link" target="_blank">
+                            ดูคลิป →
+                        </a>
+                    </div>
+                    <div style="text-align: center;">
+                        <div class="image-placeholder thumbnail-placeholder" style="margin: 0 auto 20px;">
+                            <img src="https://lh3.googleusercontent.com/d/1D2VT6KKsiYXpt5MhY3RTfL7nOL2RitIA" alt="คุณหลุยส์ Thumbnail">
+                        </div>
+                        <h3 style="color: #fff; font-size: 1.5em;">คุณหลุยส์</h3>
+                        <a href="https://www.tiktok.com/@kemikochan/video/7524267737598807314" class="video-link" target="_blank">
+                            ดูคลิป →
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 8: Channel Planning -->
+        <div class="slide">
+            <span class="slide-number">8/13</span>
+            <div class="content">
+                <h2>วางแผนทิศทางของช่องให้เป็นตัวเอง</h2>
+                <div class="highlight-box" style="max-width: 800px;">
+                    <div class="list-item">อยากให้คนจดจำเรายังไง</div>
+                    <div class="list-item">สิ่งที่ถนัด / สิ่งที่ชอบ</div>
+                    <div class="list-item">กำหนดสัดส่วนประเภทคอนเทนต์</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 9: Personal Interest Content -->
+        <div class="slide">
+            <span class="slide-number">9/13</span>
+            <div class="content">
+                <h2>ตัวอย่างคอนเทนต์ความชอบส่วนตัว</h2>
+                <div style="display: flex; gap: 40px; justify-content: center; margin-top: 50px;">
+                    <div style="text-align: center;">
+                        <div class="image-placeholder square-placeholder" style="margin: 0 auto 20px;">
+                            <img src="https://lh3.googleusercontent.com/d/1s6uWiKyBgcbXmkmOpmwKNusAFU1Htxbu" alt="Vacheron Constantin">
+                        </div>
+                        <h3 style="color: #fff; font-size: 1.5em;">Vacheron Constantin</h3>
+                        <a href="https://www.tiktok.com/@kemikochan/video/7507208027469024519" class="video-link" target="_blank">
+                            ดูคลิป →
+                        </a>
+                    </div>
+                    <div style="text-align: center;">
+                        <div class="image-placeholder square-placeholder" style="margin: 0 auto 20px;">
+                            <img src="https://lh3.googleusercontent.com/d/1HnlQB7nf9rKns_JcIC7Y78opFiBljrP1" alt="Jaeger LeCoultre">
+                        </div>
+                        <h3 style="color: #fff; font-size: 1.5em;">Jaeger LeCoultre</h3>
+                        <a href="https://www.tiktok.com/@kemikochan/video/7522056081426615560" class="video-link" target="_blank">
+                            ดูคลิป →
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 10: Social Content -->
+        <div class="slide">
+            <span class="slide-number">10/13</span>
+            <div class="content">
+                <h2>ตัวอย่างคอนเทนต์เพื่อสังคม</h2>
+                <div style="display: flex; gap: 40px; justify-content: center; margin-top: 50px;">
+                    <div class="highlight-box" style="flex: 1;">
+                        <div class="image-placeholder square-placeholder" style="margin: 0 auto 20px;">
+                            <img src="https://lh3.googleusercontent.com/d/1NX5ZUSG9NTXlPyyTQ6iaqD3IjqcBxUvj" alt="สัมภาษณ์คุณกิฟต์">
+                        </div>
+                        <h3 style="color: #fff;">สัมภาษณ์คุณกิฟต์</h3>
+                        <a href="https://www.tiktok.com/@kemikochan/video/7510197238258355464" class="video-link" target="_blank">
+                            ดูคลิป →
+                        </a>
+                    </div>
+                    <div class="highlight-box" style="flex: 1;">
+                        <div class="image-placeholder square-placeholder" style="margin: 0 auto 20px;">
+                            <img src="https://lh3.googleusercontent.com/d/1CHOD0XBi9IBRvcUWhpPNmvYs2KvD_vE2" alt="สัมภาษณ์คุณวี">
+                        </div>
+                        <h3 style="color: #fff;">สัมภาษณ์คุณวี</h3>
+                        <a href="https://www.tiktok.com/@kemikochan/video/7515020620141366546" class="video-link" target="_blank">
+                            ดูคลิป →
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 11: Obstacles -->
+        <div class="slide">
+            <span class="slide-number">11/13</span>
+            <div class="content">
+                <h2>อุปสรรคในการเป็นคอนเทนต์ครีเอเตอร์</h2>
+                <div class="highlight-box" style="max-width: 600px;">
+                    <div class="list-item">ความขี้เกียจ</div>
+                    <div class="list-item">การรับมือกับเสียงวิจารณ์</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 12: Why Start Today -->
+        <div class="slide">
+            <span class="slide-number">12/13</span>
+            <div class="content">
+                <h2>ถ้าไม่เริ่มวันนี้จะเกิดอะไรขึ้น</h2>
+                <div class="highlight-box" style="max-width: 900px;">
+                    <div class="list-item">ความยากด้านการสร้างตัวตนในแบบที่เป็น</div>
+                    <div class="list-item">ความยากด้านการสร้างยอดวิว</div>
+                    <div class="list-item">ความยากด้านการสร้างยอดผู้ติดตาม</div>
+                </div>
+                <p style="font-size: 1.5em; margin-top: 50px; color: #ff8e53;">
+                    เริ่มวันนี้ เพื่ออนาคตที่ดีกว่า <span class="emoji">🚀</span>
+                </p>
+            </div>
+        </div>
+        
+        <!-- Slide 13: Thanks -->
+        <div class="slide">
+            <span class="slide-number">13/13</span>
+            <div class="content">
+                <h1>Special Thanks</h1>
+                <div class="section-divider"></div>
+                <div style="margin-top: 50px;">
+                    <img src="https://lh3.googleusercontent.com/d/1y4n0OlgMoeCqrGRZEwFpZaXhv6e6bh2V" alt="คุณพีท" style="width: 732px; height: 312px; object-fit: cover; border-radius: 15px; margin: 0 auto; display: block;">
+                    <h3 style="color: #fff; margin-top: 30px;">ช่อง พีท (u drink i drive)</h3>
+                </div>
+                <p style="font-size: 1.5em; margin-top: 60px; color: #ccc;">
+                    ขอบคุณทุกคนที่รับฟัง <span class="emoji">🙏</span>
+                </p>
+            </div>
+        </div>
+        
+        <!-- Navigation Icons -->
+        <div class="navigation">
+            <div class="nav-icon" onclick="previousSlide()">←</div>
+            <div class="nav-icon" onclick="nextSlide()">→</div>
+        </div>
+    </div>
+    
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+        }
+        
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+        
+        function previousSlide() {
+            showSlide(currentSlide - 1);
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                previousSlide();
+            }
+        });
+        
+        // Create floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        createParticles();
+        
+        // Touch support for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+        
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+        
+        function handleSwipe() {
+            if (touchEndX < touchStartX - 50) {
+                nextSlide();
+            }
+            if (touchEndX > touchStartX + 50) {
+                previousSlide();
+            }
+        }
+    </script>
+</body>
+</html>
