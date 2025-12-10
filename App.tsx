@@ -28,17 +28,18 @@ const App: React.FC = () => {
         const result = await generatePromptsForFood(project.foodName, biteCount);
         
         const scenes: GeneratedScene[] = [
-          {
-            type: SceneType.HOOK,
-            title: result.hook.title || "The 1-Sec Hook",
-            imagePrompt: result.hook.imagePrompt,
-            videoPrompt: result.hook.videoPrompt
-          },
+          // Order Swapped: Outfit First, then Hook
           {
             type: SceneType.OUTFIT,
             title: result.outfit.title || "Fashion Reference",
             imagePrompt: result.outfit.imagePrompt,
             videoPrompt: result.outfit.videoPrompt
+          },
+          {
+            type: SceneType.HOOK,
+            title: result.hook.title || "The 1-Sec Hook",
+            imagePrompt: result.hook.imagePrompt,
+            videoPrompt: result.hook.videoPrompt
           },
           { 
             type: SceneType.POOL, 
@@ -109,8 +110,8 @@ const App: React.FC = () => {
              <div className="mt-8 bg-slate-900/50 p-6 rounded-xl border border-slate-800 text-sm text-slate-500">
                <h4 className="text-slate-300 font-semibold mb-2">Workflow</h4>
                <ul className="list-disc list-inside space-y-2">
-                 <li><strong className="text-red-400">Step 1:</strong> Hook: Model + Jumbo Food (Teasing).</li>
-                 <li><strong className="text-purple-400">Step 2:</strong> Outfit: Fashion Reference.</li>
+                 <li><strong className="text-purple-400">Step 1:</strong> Outfit: Fashion Reference.</li>
+                 <li><strong className="text-red-400">Step 2:</strong> Hook: Model + Jumbo Food (Teasing).</li>
                  <li><strong className="text-blue-400">Step 3:</strong> Pool Jump: Into Food (No Water).</li>
                  <li><strong className="text-cyan-400">Step 4:</strong> Bites: Fashion Angles + Rhythmic Chewing.</li>
                </ul>

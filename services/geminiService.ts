@@ -69,18 +69,19 @@ export const generatePromptsForFood = async (foodName: string, biteCount: number
       
       Required Scenes:
 
-      1. THE HOOK (1 Second Attention Grabber)
-         - Concept: The Model holding the JUMBO Glass Food next to her face. Scale comparison.
+      1. OUTFIT & CHARACTER (The Reference Look)
+         - Concept: Design the model's outfit to match the "${foodName}".
+         - Prompt Focus: Full body or 3/4 shot showing the Model wearing the specific outfit, posing with the JUMBO Glass ${foodName}.
+         - Use this outfit for consistency in all other scenes.
+
+      2. THE HOOK (1 Second Attention Grabber)
+         - Concept: The Model (wearing the defined outfit) holding the JUMBO Glass Food next to her face. Scale comparison.
          - Visual: Medium Close-up or Head-and-Shoulders. Beautiful lighting.
          - Action: The Model interacts with the MASSIVE glass food.
             - She might tap it with long manicured nails (Teasing).
             - She might pretend to take a bite.
             - She might stare intensely at the camera while holding the heavy food.
          - Goal: Show the Face + The Jumbo Food + The Vibe immediately.
-
-      2. OUTFIT & CHARACTER (The Reference Look)
-         - Concept: Design the model's outfit to match the "${foodName}".
-         - Prompt Focus: Full body or 3/4 shot showing the Model wearing the specific outfit, posing with the JUMBO Glass ${foodName}.
 
       3. THE POOL JUMP (Grand Opening)
          - Action: The Model jumps into a pool FILLED ENTIRELY with the ${foodName}.
@@ -117,8 +118,6 @@ export const generatePromptsForFood = async (foodName: string, biteCount: number
         systemInstruction: systemInstruction,
         responseMimeType: "application/json",
         responseSchema: sceneSchema,
-        // Keep safety settings permissive for "glass eating" context to avoid blocks, 
-        // but removed the "Candy" text instruction as requested.
         safetySettings: [
           { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_ONLY_HIGH' },
           { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_ONLY_HIGH' },
