@@ -35,8 +35,14 @@ export interface PromptResponse {
 }
 
 export const generatePromptsForFood = async (foodName: string, biteCount: number): Promise<PromptResponse> => {
+  // The API key must be obtained exclusively from the environment variable process.env.API_KEY.
+  const apiKey = process.env.API_KEY;
+  if (!apiKey) {
+    throw new Error("API Key is missing from process.env.API_KEY");
+  }
+
   try {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = new GoogleGenAI({ apiKey: apiKey });
 
     const systemInstruction = `
       You are the Creative Director for "GlassyBites", a famous high-fashion ASMR channel.

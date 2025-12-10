@@ -85,6 +85,7 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen p-6 md:p-12 max-w-7xl mx-auto">
+      
       <header className="mb-12 text-center md:text-left">
         <h1 className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600 mb-4">
           GlassyBites Prompt Studio
