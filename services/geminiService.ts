@@ -4,7 +4,7 @@ import { GoogleGenAI, Type, Schema } from "@google/genai";
 const promptPairSchema: Schema = {
   type: Type.OBJECT,
   properties: {
-    title: { type: Type.STRING, description: "Descriptive title (e.g., 'Strawberry Ruffle Dress' or 'Two-Handed Lift')" },
+    title: { type: Type.STRING, description: "Descriptive title (e.g., 'The Crunch', 'Chewing Close-up')" },
     imagePrompt: { type: Type.STRING, description: "Prompt for generating the static image" },
     videoPrompt: { type: Type.STRING, description: "Prompt for generating the video from the image" }
   },
@@ -15,22 +15,22 @@ const promptPairSchema: Schema = {
 const sceneSchema: Schema = {
   type: Type.OBJECT,
   properties: {
+    hook: promptPairSchema,
     outfit: promptPairSchema,
     pool: promptPairSchema,
-    pickup: promptPairSchema,
     bites: {
       type: Type.ARRAY,
       items: promptPairSchema,
-      description: "List of different bite/shatter angles"
+      description: "List of different bite/chew angles"
     }
   },
-  required: ["outfit", "pool", "pickup", "bites"],
+  required: ["hook", "outfit", "pool", "bites"],
 };
 
 export interface PromptResponse {
+  hook: { title: string; imagePrompt: string; videoPrompt: string };
   outfit: { title: string; imagePrompt: string; videoPrompt: string };
   pool: { title: string; imagePrompt: string; videoPrompt: string };
-  pickup: { title: string; imagePrompt: string; videoPrompt: string };
   bites: Array<{ title: string; imagePrompt: string; videoPrompt: string }>;
 }
 
@@ -46,48 +46,47 @@ export const generatePromptsForFood = async (foodName: string, biteCount: number
       You are the Creative Director for "GlassyBites", a famous high-fashion ASMR channel.
       
       CORE CONCEPT:
-      1. JUMBO SURREAL SIZE: ALL food is OVERSIZED (Jumbo). Example: A strawberry the size of a human head, a macaron the size of a cake. It creates a "How will she eat that?" reaction.
-      2. MATERIAL: All food is made of edible, hyper-realistic COLORED GLASS. Hard, glossy, crystalline.
-      3. CONSISTENCY: The "Jumbo Glass Object" must look EXACTLY the same in every scene.
-      4. FASHION MATCH: The model's outfit must strictly COORDINATE with the food (colors, textures, vibe). If the food is a Red Glass Apple, the dress might be red Avant-Garde PVC.
+      1. JUMBO SURREAL SIZE: ALL food is OVERSIZED (Jumbo).
+      2. MATERIAL: All food is made of edible, hyper-realistic COLORED GLASS.
+      3. ASMR FOCUS: The goal is "Satisfying Glass Sounds".
+      
+      CRITICAL INSTRUCTION FOR OUTFITS:
+      - ONLY describe the fashion/outfit in detail in the "OUTFIT" scene.
+      - In ALL other scenes (Hook, Pool, Bites), DO NOT mention the dress/outfit details. Focus ONLY on the action, the mouth, and the glass texture.
 
       Task: Generate a storyboard for: "${foodName}".
       
       Required Scenes:
 
-      1. OUTFIT & CHARACTER (The Look)
-         - Concept: Design the model's outfit to match the "${foodName}". Cute, High-Fashion, Avant-Garde.
+      1. THE HOOK (1 Second Attention Grabber)
+         - Concept: A split-second ASMR trigger to stop the scroll.
+         - Action: Either a fingernail TAPPING the glass food (Tapping sound), or a small utensil hitting it.
+         - Visual: Extreme Macro Close-up. 
+
+      2. OUTFIT & CHARACTER (The Reference Look)
+         - Concept: Design the model's outfit to match the "${foodName}".
          - Prompt Focus: Full body or 3/4 shot showing the Model wearing the specific outfit, posing with the JUMBO Glass ${foodName}.
 
-      2. THE POOL JUMP (The Intro)
-         - Concept: The Model jumps into a pool. Instead of water, the pool is filled with JUMBO Glass versions of the ${foodName}.
-         - Action: Upon impact, the giant glass items splash and scatter heavily.
-         - Vibe: Surreal fashion commercial.
+      3. THE POOL JUMP (Grand Opening)
+         - Action: The Model jumps into a pool filled with JUMBO Glass versions of the ${foodName}.
+         - Visual: Heavy splashing of glass items. (This is Explosion #1).
 
-      3. PICKUP (The Scale Reveal)
-         - Concept: The Model uses TWO HANDS to lift the single JUMBO Glass ${foodName}.
-         - Focus: emphasize the weight and size. It looks heavy and smooth.
-
-      4. BITE ANGLES (The Climax)
-         - Generate ${biteCount} DISTINCT bite scenes.
-         - Concept: The Model takes a bite of the JUMBO glass item.
-         - Action: It does NOT squish. It SHATTERS/EXPLODES into shards upon impact with teeth. 
-         - Consistency: Ensure it's still the huge item.
+      4. BITE & CHEW VARIATIONS (The ASMR Core - ${biteCount} shots)
+         - Concept: REALISTIC CHEWING ASMR.
+         - Action: 
+            - Shot 1: The First Bite (Cracking/Shattering).
+            - Shot 2+: CHEWING. Show the jaw moving. Show the glass being ground into smaller crystals inside the mouth.
+         - Vibe: Crunchy, satisfying, dangerous but delicious. 
+         - NOTE: NOT every shot needs to be an explosion. Focus on the "Grind" and "Crunch" texture.
 
       Prompt Guidelines:
-      
-      A) IMAGE PROMPT:
-         - Start with "A hyper-realistic photo of..."
-         - Keywords: "Jumbo size [food]", "Surreal scale", "Translucent glass texture", "Fashion editorial", "8k resolution".
-      
-      B) VIDEO PROMPT (For Veo 3.1):
-         - Start with "Cinematic video of..."
-         - Keywords: "Shattering", "Heavy impact", "Crystal sound visuals", "Slow motion", "Fashion lighting".
+      A) IMAGE PROMPT: "Hyper-realistic photo...", "Macro lens", "8k", "Glass texture".
+      B) VIDEO PROMPT: "Cinematic video...", "ASMR visual", "Detailed chewing motion", "Crunching physics".
     `;
 
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash',
-      contents: `Generate the GlassyBites storyboard for: "${foodName}" (JUMBO SIZE) with ${biteCount} bite variations.`,
+      contents: `Generate GlassyBites storyboard for: "${foodName}" (JUMBO SIZE) with ${biteCount} chewing/bite variations.`,
       config: {
         systemInstruction: systemInstruction,
         responseMimeType: "application/json",

@@ -4,9 +4,9 @@ export interface FoodItem {
 }
 
 export enum SceneType {
+  HOOK = 'HOOK',
   OUTFIT = 'OUTFIT',
   POOL = 'POOL',
-  PICKUP = 'PICKUP',
   BITE = 'BITE'
 }
 

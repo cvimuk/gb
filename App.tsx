@@ -48,8 +48,14 @@ const App: React.FC = () => {
         
         const scenes: GeneratedScene[] = [
           {
+            type: SceneType.HOOK,
+            title: result.hook.title || "The 1-Sec Hook",
+            imagePrompt: result.hook.imagePrompt,
+            videoPrompt: result.hook.videoPrompt
+          },
+          {
             type: SceneType.OUTFIT,
-            title: result.outfit.title || "Fashion Match",
+            title: result.outfit.title || "Fashion Reference",
             imagePrompt: result.outfit.imagePrompt,
             videoPrompt: result.outfit.videoPrompt
           },
@@ -59,15 +65,9 @@ const App: React.FC = () => {
             imagePrompt: result.pool.imagePrompt,
             videoPrompt: result.pool.videoPrompt
           },
-          { 
-            type: SceneType.PICKUP, 
-            title: result.pickup.title || "The Pickup", 
-            imagePrompt: result.pickup.imagePrompt,
-            videoPrompt: result.pickup.videoPrompt
-          },
           ...result.bites.map((bite, index) => ({
             type: SceneType.BITE,
-            title: bite.title || `Bite Angle ${index + 1}`,
+            title: bite.title || `Chew/Bite ${index + 1}`,
             imagePrompt: bite.imagePrompt,
             videoPrompt: bite.videoPrompt
           }))
@@ -123,9 +123,10 @@ const App: React.FC = () => {
              <div className="mt-8 bg-slate-900/50 p-6 rounded-xl border border-slate-800 text-sm text-slate-500">
                <h4 className="text-slate-300 font-semibold mb-2">Workflow</h4>
                <ul className="list-disc list-inside space-y-2">
-                 <li><strong className="text-purple-400">Step 1:</strong> Generate Outfit & Jumbo Food Ref.</li>
-                 <li><strong className="text-blue-400">Step 2:</strong> Create Pool & Pickup shots.</li>
-                 <li><strong className="text-cyan-400">Step 3:</strong> Generate the Shattering Bite videos.</li>
+                 <li><strong className="text-red-400">Step 1:</strong> The 1-Sec Hook (Tapping/Snap).</li>
+                 <li><strong className="text-purple-400">Step 2:</strong> Outfit Reference.</li>
+                 <li><strong className="text-blue-400">Step 3:</strong> Pool Jump (Splashing).</li>
+                 <li><strong className="text-cyan-400">Step 4:</strong> Chewing & Crunching ASMR.</li>
                </ul>
             </div>
           </div>

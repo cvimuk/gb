@@ -34,25 +34,40 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
       <div className="p-4 grid grid-cols-1 gap-6">
         {project.scenes.map((scene, idx) => {
           const isOutfit = scene.type === SceneType.OUTFIT;
+          const isHook = scene.type === SceneType.HOOK;
+          
+          let cardStyle = 'bg-slate-900/40 border-slate-700/50 hover:border-slate-600';
+          let labelStyle = 'bg-slate-800 text-slate-300 border-slate-700';
+          let labelText = `SCENE ${idx}`;
+          let titleColor = 'text-cyan-200';
+          let imageBorder = 'border-purple-900/30';
+
+          if (isOutfit) {
+            cardStyle = 'bg-purple-900/20 border-purple-500/30 hover:border-purple-400/50';
+            labelStyle = 'bg-purple-900 text-purple-200 border-purple-700';
+            labelText = 'CHARACTER & OUTFIT';
+            titleColor = 'text-purple-200';
+            imageBorder = 'border-pink-900/30';
+          } else if (isHook) {
+             cardStyle = 'bg-red-900/20 border-red-500/30 hover:border-red-400/50';
+             labelStyle = 'bg-red-900 text-red-200 border-red-700';
+             labelText = 'HOOK (1-SEC)';
+             titleColor = 'text-red-200';
+             imageBorder = 'border-red-900/30';
+          }
           
           return (
-            <div key={idx} className={`rounded-lg p-5 border transition-colors ${
-              isOutfit 
-                ? 'bg-purple-900/20 border-purple-500/30 hover:border-purple-400/50' 
-                : 'bg-slate-900/40 border-slate-700/50 hover:border-slate-600'
-            }`}>
+            <div key={idx} className={`rounded-lg p-5 border transition-colors ${cardStyle}`}>
               
               {/* Header */}
               <div className="mb-4">
                 <div className="flex items-center gap-2 mb-1">
-                   <span className={`text-xs font-bold px-2 py-0.5 rounded border ${
-                     isOutfit ? 'bg-purple-900 text-purple-200 border-purple-700' : 'bg-slate-800 text-slate-300 border-slate-700'
-                   }`}>
-                     {isOutfit ? 'CHARACTER & OUTFIT' : `SCENE ${idx}`} 
+                   <span className={`text-xs font-bold px-2 py-0.5 rounded border ${labelStyle}`}>
+                     {labelText} 
                    </span>
                    <span className="text-sm font-bold text-white uppercase tracking-wider">{scene.type}</span>
                 </div>
-                <div className={`text-sm font-medium ${isOutfit ? 'text-purple-200' : 'text-cyan-200'}`}>
+                <div className={`text-sm font-medium ${titleColor}`}>
                   {scene.title}
                 </div>
               </div>
@@ -62,16 +77,14 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
                 {/* IMAGE PROMPT */}
                 <div className="flex flex-col">
                    <div className="flex justify-between items-center mb-2">
-                      <span className={`text-xs font-semibold flex items-center gap-1 ${isOutfit ? 'text-pink-400' : 'text-purple-400'}`}>
+                      <span className={`text-xs font-semibold flex items-center gap-1 ${isOutfit ? 'text-pink-400' : isHook ? 'text-red-400' : 'text-purple-400'}`}>
                          <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
                             <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
                          </svg>
                          IMAGE PROMPT
                       </span>
                    </div>
-                   <div className={`flex-grow bg-slate-950 rounded p-3 text-xs text-slate-300 font-mono leading-relaxed border mb-2 ${
-                     isOutfit ? 'border-pink-900/30' : 'border-purple-900/30'
-                   }`}>
+                   <div className={`flex-grow bg-slate-950 rounded p-3 text-xs text-slate-300 font-mono leading-relaxed border mb-2 ${imageBorder}`}>
                       {scene.imagePrompt}
                    </div>
                    <button
