@@ -1,14 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { InputSection } from './components/InputSection';
 import { ProjectCard } from './components/ProjectCard';
+import { ApiKeyConfig } from './components/ApiKeyConfig';
 import { FoodProject, GeneratedScene, SceneType } from './types';
 import { generatePromptsForFood } from './services/geminiService';
 
 const App: React.FC = () => {
   const [projects, setProjects] = useState<FoodProject[]>([]);
   const [globalLoading, setGlobalLoading] = useState(false);
+  const [apiKey, setApiKey] = useState<string>('');
+
+  useEffect(() => {
+    const storedKey = localStorage.getItem('gemini_api_key');
+    if (storedKey) {
+      setApiKey(storedKey);
+    }
+  }, []);
+
+  const handleSaveApiKey = (key: string) => {
+    setApiKey(key);
+    localStorage.setItem('gemini_api_key', key);
+  };
 
   const handleGeneratePrompts = async (foodList: string[], biteCount: number) => {
+    if (!apiKey) {
+      alert("Please enter your Gemini API Key first.");
+      return;
+    }
+
     setGlobalLoading(true);
     
     // Create new project placeholders
@@ -25,7 +44,7 @@ const App: React.FC = () => {
     // Process sequentially
     await Promise.allSettled(newProjects.map(async (project) => {
       try {
-        const result = await generatePromptsForFood(project.foodName, biteCount);
+        const result = await generatePromptsForFood(project.foodName, biteCount, apiKey);
         
         const scenes: GeneratedScene[] = [
           {
@@ -71,7 +90,7 @@ const App: React.FC = () => {
                 scenes: [{
                   type: SceneType.POOL, 
                   title: 'Generation Failed', 
-                  imagePrompt: 'Error generating prompts.', 
+                  imagePrompt: 'Error generating prompts. Check your API Key.', 
                   videoPrompt: 'Please try again.'
                 }] 
               } 
@@ -86,6 +105,8 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen p-6 md:p-12 max-w-7xl mx-auto">
       
+      <ApiKeyConfig onSave={handleSaveApiKey} hasKey={!!apiKey} />
+
       <header className="mb-12 text-center md:text-left">
         <h1 className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600 mb-4">
           GlassyBites Prompt Studio

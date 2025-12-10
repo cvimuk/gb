@@ -34,11 +34,9 @@ export interface PromptResponse {
   bites: Array<{ title: string; imagePrompt: string; videoPrompt: string }>;
 }
 
-export const generatePromptsForFood = async (foodName: string, biteCount: number): Promise<PromptResponse> => {
-  // The API key must be obtained exclusively from the environment variable process.env.API_KEY.
-  const apiKey = process.env.API_KEY;
+export const generatePromptsForFood = async (foodName: string, biteCount: number, apiKey: string): Promise<PromptResponse> => {
   if (!apiKey) {
-    throw new Error("API Key is missing from process.env.API_KEY");
+    throw new Error("API Key is required");
   }
 
   try {
