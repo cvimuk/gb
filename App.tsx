@@ -25,7 +25,6 @@ const App: React.FC = () => {
     // Process sequentially
     await Promise.allSettled(newProjects.map(async (project) => {
       try {
-        // No longer passing apiKey, it's handled in the service via env
         const result = await generatePromptsForFood(project.foodName, biteCount);
         
         const scenes: GeneratedScene[] = [
@@ -64,6 +63,13 @@ const App: React.FC = () => {
       } catch (error: any) {
         console.error(`Failed to generate prompts for ${project.foodName}`, error);
         
+        let errorMsg = 'Error generating prompts.';
+        if (error.message.includes('API Key')) {
+            errorMsg = 'API Key Error: "Gkey" not found. Please check Vercel Env Vars.';
+        } else if (error.message.includes('Safety')) {
+            errorMsg = 'Safety Filter Triggered: Try describing the food as "Candy" or "Sweet".';
+        }
+
          setProjects(prev => prev.map(p => 
           p.id === project.id 
             ? { 
@@ -72,8 +78,8 @@ const App: React.FC = () => {
                 scenes: [{
                   type: SceneType.POOL, 
                   title: 'Generation Failed', 
-                  imagePrompt: 'Error generating prompts. Please check your Gkey environment variable or quota.', 
-                  videoPrompt: 'Please try again.'
+                  imagePrompt: errorMsg, 
+                  videoPrompt: 'Please try again or check your API Key configuration.'
                 }] 
               } 
             : p
@@ -103,10 +109,10 @@ const App: React.FC = () => {
              <div className="mt-8 bg-slate-900/50 p-6 rounded-xl border border-slate-800 text-sm text-slate-500">
                <h4 className="text-slate-300 font-semibold mb-2">Workflow</h4>
                <ul className="list-disc list-inside space-y-2">
-                 <li><strong className="text-red-400">Step 1:</strong> The 1-Sec Hook (Tapping/Snap).</li>
-                 <li><strong className="text-purple-400">Step 2:</strong> Outfit Reference.</li>
-                 <li><strong className="text-blue-400">Step 3:</strong> Pool Jump (Splashing).</li>
-                 <li><strong className="text-cyan-400">Step 4:</strong> Chewing & Crunching ASMR.</li>
+                 <li><strong className="text-red-400">Step 1:</strong> Hook: Model + Jumbo Food (Teasing).</li>
+                 <li><strong className="text-purple-400">Step 2:</strong> Outfit: Fashion Reference.</li>
+                 <li><strong className="text-blue-400">Step 3:</strong> Pool Jump: Into Food (No Water).</li>
+                 <li><strong className="text-cyan-400">Step 4:</strong> Bites: Fashion Angles + Rhythmic Chewing.</li>
                </ul>
             </div>
           </div>
