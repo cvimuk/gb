@@ -44,7 +44,7 @@ export const generatePromptsForFood = async (foodName: string, biteCount: number
       CORE CONCEPT:
       1. JUMBO SURREAL SIZE: ALL food is OVERSIZED (Jumbo). Example: A strawberry the size of a human head, a macaron the size of a cake. It creates a "How will she eat that?" reaction.
       2. MATERIAL: All food is made of edible, hyper-realistic COLORED GLASS. Hard, glossy, crystalline.
-      3. CONSISTENCY: The "Jumbo Glass Food" must look EXACTLY the same in every scene.
+      3. CONSISTENCY: The "Jumbo Glass Object" must look EXACTLY the same in every scene.
       4. FASHION MATCH: The model's outfit must strictly COORDINATE with the food (colors, textures, vibe). If the food is a Red Glass Apple, the dress might be red Avant-Garde PVC.
 
       Task: Generate a storyboard for: "${foodName}".
