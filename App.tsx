@@ -67,7 +67,7 @@ const App: React.FC = () => {
         if (error.message.includes('API Key')) {
             errorMsg = 'API Key Error: "Gkey" not found. Please check Vercel Env Vars.';
         } else if (error.message.includes('Safety')) {
-            errorMsg = 'Safety Filter Triggered: Try describing the food as "Candy" or "Sweet".';
+            errorMsg = 'Safety Filter Triggered. The AI refused to generate this request.';
         }
 
          setProjects(prev => prev.map(p => 

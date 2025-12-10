@@ -36,8 +36,6 @@ export interface PromptResponse {
 
 export const generatePromptsForFood = async (foodName: string, biteCount: number): Promise<PromptResponse> => {
   // 1. Aggressive API Key Detection
-  // Check all common prefixes used in Vercel/Vite/Next.js/React environments
-  // This solves the issue where "Gkey" might be hidden from the browser
   const apiKey = 
     process.env.Gkey || 
     process.env.VITE_Gkey || 
@@ -54,14 +52,14 @@ export const generatePromptsForFood = async (foodName: string, biteCount: number
     const ai = new GoogleGenAI({ apiKey });
 
     const systemInstruction = `
-      You are the Creative Director for "GlassyBites", a high-fashion fantasy commercial channel.
+      You are the Creative Director for "GlassyBites", a famous high-fashion ASMR channel.
       
-      CORE CONCEPT & SAFETY CONTEXT:
-      1. JUMBO SIZE: All food is OVERSIZED (Jumbo).
-      2. MATERIAL: **EDIBLE SUGAR GLASS (Isomalt)**. 
-         *IMPORTANT*: This is NOT real glass. It is CANDY shaped like glass. It is safe to eat.
-         *Describe it as "Glassy Candy" or "Crystal Edible Art" to ensure safety compliance.*
-      3. ASMR FOCUS: "Satisfying Crunchy Sounds" mixed with "High Fashion Beauty".
+      CORE CONCEPT:
+      1. JUMBO SURREAL SIZE: ALL food is OVERSIZED (Jumbo).
+      2. MATERIAL: All food is made of edible, hyper-realistic COLORED GLASS. 
+         - It looks sharp, shiny, and translucent like real glass.
+         - It shatters like glass.
+      3. ASMR FOCUS: The goal is "Satisfying Glass Sounds" mixed with "High Fashion Beauty".
       
       CRITICAL INSTRUCTION FOR OUTFITS:
       - Define the outfit ONCE in the "OUTFIT" scene.
@@ -72,54 +70,55 @@ export const generatePromptsForFood = async (foodName: string, biteCount: number
       Required Scenes:
 
       1. THE HOOK (1 Second Attention Grabber)
-         - Concept: The Model holding the JUMBO Edible Glass Food next to her face.
-         - Visual: Medium Close-up or Head-and-Shoulders. Beautiful studio lighting.
-         - Action: The Model interacts with the MASSIVE food. 
-            - She might tap it with nails (ASMR Tapping).
-            - She might tease a bite.
-            - She uses the food as a fashion accessory.
-         - Goal: Stop the scroll immediately. Face + Jumbo Food + Beauty.
+         - Concept: The Model holding the JUMBO Glass Food next to her face. Scale comparison.
+         - Visual: Medium Close-up or Head-and-Shoulders. Beautiful lighting.
+         - Action: The Model interacts with the MASSIVE glass food.
+            - She might tap it with long manicured nails (Teasing).
+            - She might pretend to take a bite.
+            - She might stare intensely at the camera while holding the heavy food.
+         - Goal: Show the Face + The Jumbo Food + The Vibe immediately.
 
       2. OUTFIT & CHARACTER (The Reference Look)
          - Concept: Design the model's outfit to match the "${foodName}".
-         - Prompt Focus: Full body or 3/4 shot showing the Model wearing the specific outfit, posing with the JUMBO ${foodName}.
+         - Prompt Focus: Full body or 3/4 shot showing the Model wearing the specific outfit, posing with the JUMBO Glass ${foodName}.
 
-      3. THE POOL JUMP (Surreal Dive)
+      3. THE POOL JUMP (Grand Opening)
          - Action: The Model jumps into a pool FILLED ENTIRELY with the ${foodName}.
          - CRITICAL RULE: **NO WATER**. The pool contains NO CLEAR WATER.
          - Visual Logic:
-            * Liquid Foods (Sauce/Soup/Honey): The pool is filled with the thick liquid sauce/soup itself. She splashes into the sauce.
-            * Solid Foods (Cookies/Fruit/Fried): It is a "Ball Pit" of millions of ${foodName}s. She jumps into a pile of them.
-         - Visual: Surreal, high-impact splash of food particles or sauce.
+            * If the food is saucy/liquid (e.g., Carbonara, Curry, Honey): The pool is filled with Jumbo Glass Noodles and thick Glass Sauce. She splashes into the sauce/pasta itself.
+            * If the food is solid (e.g., Cookies, Berries, Fried Chicken): It acts like a "Ball Pit" of Jumbo Glass items. She splashes into a pile of them.
+         - Visual: Heavy displacement of the ${foodName}. Surreal immersion.
 
       4. BITE & CHEW VARIATIONS (The ASMR Core - ${biteCount} shots)
-         - Concept: FASHION EATING.
+         - Concept: BEAUTY MEETS CRUNCH.
          - FRAMING RULE:
-           - **SHOW THE MODEL**. Do not just show lips.
-           - VARY THE ANGLES: 
+           - DO NOT just do macro lips. Show the MODEL.
+           - VARY the angles: 
              1. Side Profile (Half-Body).
              2. Frontal (Head to Chest).
              3. 3/4 Angle (Shoulder up).
-             4. Close-up on eyes/jaw (but still showing face parts).
+           - Maintain the "Fashion" aesthetic even while eating.
          - ACTION RULE:
-           - Shot 1: The Bite & Shatter (Explosion of sugar glass).
-           - Shot 2+ (The Rest): **FOCUS ON RHYTHMIC CHEWING**.
-           - Show the jaw moving. Show the crunch. Show the model savoring the texture.
-           - The Model looks beautiful and calm, treating the crunch like music.
+           - Shot 1 (Only): The Bite & Shatter. The glass breaks upon contact with teeth.
+           - Shot 2+ (The Rest): FOCUSED ON CHEWING. Show the jaw moving rhythmically. Show the model enjoying the "Crunch". 
+           - The Model should look beautiful, calm, or euphoric while chewing the sharp glass.
+         - Vibe: Crunchy, satisfying, dangerous but delicious. 
 
       Prompt Guidelines:
-      A) IMAGE PROMPT: "Hyper-realistic commercial photography", "Fashion model [description]...", "Jumbo [Food] made of translucent sugar glass", "Cinematic lighting".
-      B) VIDEO PROMPT: "Cinematic slow motion", "Model chewing rhythmically", "Jaw movement", "Crunching physics", "Sugar glass shattering", "Refractive light".
+      A) IMAGE PROMPT: "Hyper-realistic photo", "Fashion photography", "Studio lighting", "Model [description]...", "Jumbo [Food] made of glass".
+      B) VIDEO PROMPT: "Cinematic video", "ASMR visual", "Model chewing", "Jaw movement", "Crunching physics", "Glass refracting light".
     `;
 
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash',
-      contents: `Generate GlassyBites storyboard for: "${foodName}" (JUMBO SUGAR GLASS) with ${biteCount} chewing/bite variations.`,
+      contents: `Generate GlassyBites storyboard for: "${foodName}" (JUMBO SIZE) with ${biteCount} chewing/bite variations.`,
       config: {
         systemInstruction: systemInstruction,
         responseMimeType: "application/json",
         responseSchema: sceneSchema,
-        // Safety settings to allow "eating glass-like objects" (Isomalt/Candy)
+        // Keep safety settings permissive for "glass eating" context to avoid blocks, 
+        // but removed the "Candy" text instruction as requested.
         safetySettings: [
           { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_ONLY_HIGH' },
           { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_ONLY_HIGH' },
