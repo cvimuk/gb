@@ -72,8 +72,12 @@ export const generatePromptsForFood = async (foodName: string, biteCount: number
          - Prompt Focus: Full body or 3/4 shot showing the Model wearing the specific outfit, posing with the JUMBO Glass ${foodName}.
 
       3. THE POOL JUMP (Grand Opening)
-         - Action: The Model jumps into a pool filled with JUMBO Glass versions of the ${foodName}.
-         - Visual: Heavy splashing of glass items. (This is the Main Explosion).
+         - Action: The Model jumps into a pool FILLED ENTIRELY with the ${foodName}.
+         - CRITICAL RULE: NO WATER. The pool contains NO CLEAR WATER.
+         - Visual Logic:
+            * If the food is saucy/liquid (e.g., Carbonara, Curry, Honey): The pool is filled with Jumbo Glass Noodles and thick Glass Sauce. She splashes into the sauce/pasta itself.
+            * If the food is solid (e.g., Cookies, Berries, Fried Chicken): It acts like a "Ball Pit" of Jumbo Glass items. She splashes into a pile of them.
+         - Visual: Heavy displacement of the ${foodName}. Surreal immersion.
 
       4. BITE & CHEW VARIATIONS (The ASMR Core - ${biteCount} shots)
          - Concept: BEAUTY MEETS CRUNCH.
