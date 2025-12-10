@@ -34,13 +34,16 @@ export interface PromptResponse {
   bites: Array<{ title: string; imagePrompt: string; videoPrompt: string }>;
 }
 
-export const generatePromptsForFood = async (foodName: string, biteCount: number, apiKey: string): Promise<PromptResponse> => {
+export const generatePromptsForFood = async (foodName: string, biteCount: number): Promise<PromptResponse> => {
+  // Use Gkey as requested, fallback to API_KEY if needed.
+  const apiKey = process.env.Gkey || process.env.API_KEY;
+  
   if (!apiKey) {
-    throw new Error("API Key is required");
+    throw new Error("API Key (Gkey) is missing in environment variables.");
   }
 
   try {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || apiKey });
+    const ai = new GoogleGenAI({ apiKey });
 
     const systemInstruction = `
       You are the Creative Director for "GlassyBites", a famous high-fashion ASMR channel.
@@ -61,10 +64,10 @@ export const generatePromptsForFood = async (foodName: string, biteCount: number
       1. THE HOOK (1 Second Attention Grabber)
          - Concept: The Model holding the JUMBO Glass Food next to her face. Scale comparison.
          - Visual: Medium Close-up or Head-and-Shoulders. Beautiful lighting.
-         - Action: Choose ONE creative hook:
-            A) Model tapping the glass with long manicured nails (ASMR trigger).
-            B) Model staring intensely at camera while licking the glass.
-            C) Model struggling to hold the heavy jumbo food, teasing a bite.
+         - Action: The Model interacts with the MASSIVE glass food.
+            - She might tap it with long manicured nails (Teasing).
+            - She might pretend to take a bite.
+            - She might stare intensely at the camera while holding the heavy food.
          - Goal: Show the Face + The Jumbo Food + The Vibe immediately.
 
       2. OUTFIT & CHARACTER (The Reference Look)
@@ -110,7 +113,9 @@ export const generatePromptsForFood = async (foodName: string, biteCount: number
     });
 
     if (response.text) {
-      return JSON.parse(response.text) as PromptResponse;
+      // Robust JSON parsing: Remove potential Markdown code blocks
+      const cleanText = response.text.replace(/```json/g, '').replace(/```/g, '').trim();
+      return JSON.parse(cleanText) as PromptResponse;
     }
     throw new Error("No response text generated");
 
